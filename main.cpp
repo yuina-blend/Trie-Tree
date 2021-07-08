@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <vector>
 
 typedef struct trie_tree {
     struct trie_tree *node[26];
@@ -121,6 +122,7 @@ int main() {
     // printf("%d", int(word[0]));
     //car, card, try, tried, catを挿入する
     trie_node *root = malloc_node();
+    printf("1: 挿入\n");
     root = add_node(root, "car", 3);
     root = add_node(root, "card", 4);
     root = add_node(root, "try", 3);
@@ -131,12 +133,34 @@ int main() {
     print_tree(root, "", 0);
     // print_tree_2(root);
     //card, carp, trieを検索する
-    search_word(root, "card", 4);
-    search_word(root, "carp", 4);
-    search_word(root, "trie", 4);
+    printf("\n2: 探索\n");
+    bool search_results[3];
+    std::vector<char*> search_words = {"card", "crap", "trie"};
+    search_results[0] = search_word(root, "card", 4);
+    search_results[1] = search_word(root, "carp", 4);
+    search_results[2] = search_word(root, "trie", 4);
+    for (int i = 0; i < 3; i++) {
+        if (search_results[i]) {
+            printf("found %s\n", search_words[i]);
+        }
+        else {
+            printf("not found %s\n", search_words[i]);
+        }
+    }
     // search_word(root, "cat", 3);
-    delete_word(root, "car", 3, 0);
-    delete_word(root, "try", 3, 0);
+    //tried, cat, try, car, cardを削除する
+    printf("\n3: 削除\n");
+    trie_node *delete_results[5];
+    std::vector<char *> delete_words = {"tried", "cat", "try", "car", "card"};
+    delete_results[0] = delete_word(root, "tried", 5, 0);
+    delete_results[1] = delete_word(root, "cat", 3, 0);
+    delete_results[2] = delete_word(root, "try", 3, 0);
+    delete_results[3] = delete_word(root, "car", 3, 0);
+    delete_results[4] = delete_word(root, "card", 4, 0);
+    for (int i = 0; i < 5; i++) {
+        if (delete_results[i] != NULL) {
+            printf("deleted %s\n", delete_words[i]);
+        }
+    }
     print_tree(root, "", 0);
-    delete_word(root, "dog", 3, 0);
 }
